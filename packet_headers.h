@@ -24,11 +24,31 @@ struct ipv4_packet {
     unsigned short total_length;
     unsigned short identification;
     unsigned short flags_and_fragment_offset;
-    unsigned char time_to_live;
+    unsigned char ttl;
     unsigned char protocol;
     unsigned short header_checksum;
     unsigned int src_addr;
     unsigned int dest_addr;
 
     // payload should be exposed by now...
+};
+
+struct tcp_header {
+    unsigned short src_port;
+    unsigned short dest_port;
+    unsigned int sequence;
+    unsigned int acknowledgment;
+    unsigned char reserved :4;
+    unsigned char data_offset :4;
+    unsigned char flags;
+
+#define fin 0x01
+#define syn 0x02
+#define rst 0x04
+#define psh 0x08
+#define ack 0x10
+#define urg 0x20
+    unsigned short window_size;
+    unsigned short checksum;
+    unsigned short urgent_pointer;
 };

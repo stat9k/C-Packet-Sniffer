@@ -18,7 +18,10 @@
 #include <pcap.h>
 #include "packet_headers.h"
 #include <arpa/inet.h>
+#include <stdlib.h>
 
+
+int packet_number = 0;
 
 /**
  * Unpacks the ethernet frame, prints out the source and destination
@@ -34,15 +37,16 @@ int unpack_ethernet_header_frame (const u_char *packet);
  * Unpacks the IPv4 Packet, prints out the ipv4 header info
  *
  * @param packet - the parsed data from tcpdump + ETHERNET_HEADER_LENGTH
+ * @param return - the IPv4 protocol - TCP/UDP/ICMP etc...
  */
-void unpack_ipv4_packet (const u_char *packet);
+int unpack_ipv4_packet (const u_char *packet);
 
 /**
  * Prints the IPv4 address in the form of 127.0.0.1
  *
  * @param address - the bytes to be converted
  */
-void get_ipv4_address (char *string, __uint32_t address);
+void get_ipv4_address (char *msg, __uint32_t address);
 
 
 /**
@@ -82,46 +86,100 @@ int unpack_ethernet_header_frame(const u_char *packet) {
     return eth_frame->protocol;
 }
 
-void unpack_ipv4_packet(const u_char *packet) {
+int unpack_ipv4_packet(const u_char *packet) {
 
     struct ipv4_packet *ip_packet = (struct ipv4_packet *) packet;
 
-    printf("Version: %d\n", ip_packet->version);
+    printf("\tVersion: %d\n", ip_packet->version);
+    printf("\tTotal Length: %d\n", ip_packet->total_length);
+    printf("\tTime To Live: %d\n", ip_packet->ttl);
+    get_ipv4_address("\tSource Address", ip_packet->src_addr);
+    get_ipv4_address("\tDestination Address", ip_packet->dest_addr);
 
-    get_ipv4_address("Source Address", ip_packet->src_addr);
-    get_ipv4_address("Destination Address", ip_packet->dest_addr);
+    return ip_packet->protocol;
+}
+
+void icmp_packet ()
+{
+
+}
+
+/**
+ * Unpack the tcp segment and print valid information to std.err
+ * @param packet
+ */
+void tcp_segment (const u_char *packet)
+{
+    struct tcp_header *tcp_segment = (struct tcp_header *) packet;
+
+    printf("\t\tSource Port: %d\n", ntohs(tcp_segment->src_port));
+    printf("\t\tDestination Port: %d\n", ntohs(tcp_segment->dest_port));
+    printf("\t\tSequence: %d\n", ntohl(tcp_segment->sequence));
+    printf("\t\tAcknowledgement: %d\n", ntohl(tcp_segment->acknowledgment));
+    printf("\t\tData Offset: %d\n", tcp_segment->data_offset);
+}
+
+void udp_segment ()
+{
+
 }
 
 void got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *packet) {
-    printf("Header Length: %d\n", header->len);
 
     // now we have the packet, we need to break it open
     // we start with the ethernet_frame
-    int eth_proto = unpack_ethernet_header_frame(packet);
+    printf("\nEthernet Frame: #%d\n", packet_number++);
+    int ip_proto, eth_proto = unpack_ethernet_header_frame(packet);
 
     switch (eth_proto) {
 
-        case 8:                             // IPv4
+        case 8:                                     // IPv4
             printf("Protocol: IPv4\n");
 
             // unpack the IPv4 packet
-            unpack_ipv4_packet(packet + ETH_HEADER_LENGTH);
+            ip_proto = unpack_ipv4_packet(packet + ETH_HEADER_LENGTH);
+
+            // unpack the IPv4 protocol
+            if (ip_proto == 6)                      // TCP
+            {
+                printf("\tTCP Segment\n");
+                tcp_segment(packet + ETH_HEADER_LENGTH + sizeof(struct ipv4_packet));
+            }
+
+            else if (ip_proto == 1)                 // ICMP
+            {
+
+            }
+
+            else if (ip_proto == 17)                // UDP
+            {
+
+            }
+
+            else
+            {
+                perror("Unknown IPv4 Protocol\n");
+                return;
+            }
+
             break;
 
-        case 56710:                         // IPv6
+        case 56710:                                 // IPv6
             printf("Protocol: IPv6\n");
             break;
 
         default:
             break;
     }
+
+    printf("\n");
 }
 
-void get_ipv4_address(char *string, __uint32_t address) {
+void get_ipv4_address(char *msg, __uint32_t address) {
     struct in_addr ip;
     ip.s_addr = address;
 
-    printf("%s: %s\n", string, inet_ntoa(ip));
+    printf("%s: %s\n", msg, inet_ntoa(ip));
 }
 
 
