@@ -124,6 +124,29 @@ void udp_segment ()
 
 }
 
+void dump(const unsigned char *data_buffer, const unsigned int length) {
+    unsigned char byte;
+    unsigned int i, j;
+
+    for (i = 0; i < length; i++) {
+        byte = data_buffer[i];
+        printf("%02x", data_buffer[i]);
+        if (((i % 16) == 15) || (i == length - 1)) {
+            for (j = 0; j < 15 - (i % 16); j++)
+                printf("  ");
+            printf("| ");
+            for (j = (i - (i % 16)); j <= i; j++) {
+                byte = data_buffer[j];
+                if ((byte > 31) && (byte < 127))
+                    printf("%c", byte);
+                else
+                    printf(".");
+            }
+            printf("\n");
+        }
+    }
+}
+
 void got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *packet) {
 
     // now we have the packet, we need to break it open
@@ -144,6 +167,9 @@ void got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *pa
             {
                 printf("\tTCP Segment\n");
                 tcp_segment(packet + ETH_HEADER_LENGTH + sizeof(struct ipv4_packet));
+
+                dump((packet + ETH_HEADER_LENGTH + sizeof(struct ipv4_packet) + sizeof(struct tcp_header)), header->len);
+
             }
 
             else if (ip_proto == 1)                 // ICMP
