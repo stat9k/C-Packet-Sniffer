@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/jackmac/Documents/OneDrive/CLionProjects/C-Packet-Sniffer/main.c
+stdio.h
+-
+pcap.h
+-
+packet_headers.h
+/Users/jackmac/Documents/OneDrive/CLionProjects/C-Packet-Sniffer/packet_headers.h
+
+/Users/jackmac/Documents/OneDrive/CLionProjects/C-Packet-Sniffer/packet_headers.h
+
