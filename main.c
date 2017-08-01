@@ -18,48 +18,11 @@
 #include <pcap.h>
 #include "packet_headers.h"
 #include <arpa/inet.h>
-#include <stdlib.h>
+#include "main.h"
 
 
-int packet_number = 0;
-
-/**
- * Unpacks the ethernet frame, prints out the source and destination
- * MAC addresses and returns the protocol
- *
- * @param packet - the parsed data from tcpdump/pcap_file
- * @return - the ethernet protocol - IPv4, IPv6, etc...
- */
-int unpack_ethernet_header_frame (const u_char *packet);
-
-
-/**
- * Unpacks the IPv4 Packet, prints out the ipv4 header info
- *
- * @param packet - the parsed data from tcpdump + ETHERNET_HEADER_LENGTH
- * @param return - the IPv4 protocol - TCP/UDP/ICMP etc...
- */
-int unpack_ipv4_packet (const u_char *packet);
-
-/**
- * Prints the IPv4 address in the form of 127.0.0.1
- *
- * @param address - the bytes to be converted
- */
-void get_ipv4_address (char *msg, __uint32_t address);
-
-
-/**
- * The main function for parsing a packet
- *
- * @param args
- * @param header
- * @param packet
- */
-void got_packet (u_char *args, const struct pcap_pkthdr *header, const u_char *packet);
-
-
-int unpack_ethernet_header_frame(const u_char *packet) {
+int
+unpack_ethernet_header_frame(const u_char *packet) {
 
     struct ethernet_frame *eth_frame = (struct ethernet_frame *) packet;
 
@@ -86,7 +49,8 @@ int unpack_ethernet_header_frame(const u_char *packet) {
     return eth_frame->protocol;
 }
 
-int unpack_ipv4_packet(const u_char *packet) {
+int
+unpack_ipv4_packet(const u_char *packet) {
 
     struct ipv4_packet *ip_packet = (struct ipv4_packet *) packet;
 
@@ -99,32 +63,20 @@ int unpack_ipv4_packet(const u_char *packet) {
     return ip_packet->protocol;
 }
 
-void icmp_packet ()
+void
+icmp_packet ()
 {
 
 }
 
-/**
- * Unpack the tcp segment and print valid information to std.err
- * @param packet
- */
-void tcp_segment (const u_char *packet)
-{
-    struct tcp_header *tcp_segment = (struct tcp_header *) packet;
-
-    printf("\t\tSource Port: %d\n", ntohs(tcp_segment->src_port));
-    printf("\t\tDestination Port: %d\n", ntohs(tcp_segment->dest_port));
-    printf("\t\tSequence: %d\n", ntohl(tcp_segment->sequence));
-    printf("\t\tAcknowledgement: %d\n", ntohl(tcp_segment->acknowledgment));
-    printf("\t\tData Offset: %d\n", tcp_segment->data_offset);
-}
-
-void udp_segment ()
+void
+udp_segment ()
 {
 
 }
 
-void dump(const unsigned char *data_buffer, const unsigned int length) {
+void
+dump(const unsigned char *data_buffer, const unsigned int length) {
     unsigned char byte;
     unsigned int i, j;
 
@@ -147,7 +99,27 @@ void dump(const unsigned char *data_buffer, const unsigned int length) {
     }
 }
 
-void got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *packet) {
+void
+get_ipv4_address(char *msg, __uint32_t address) {
+    struct in_addr ip;
+    ip.s_addr = address;
+
+    printf("%s: %s\n", msg, inet_ntoa(ip));
+}
+
+void
+tcp_segment(const u_char *packet) {
+    struct tcp_header *tcp_segment = (struct tcp_header *) packet;
+
+    printf("\t\tSource Port: %d\n", ntohs(tcp_segment->src_port));
+    printf("\t\tDestination Port: %d\n", ntohs(tcp_segment->dest_port));
+    printf("\t\tSequence: %d\n", ntohl(tcp_segment->sequence));
+    printf("\t\tAcknowledgement: %d\n", ntohl(tcp_segment->acknowledgment));
+    printf("\t\tData Offset: %d\n", tcp_segment->data_offset);
+}
+
+void
+got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *packet) {
 
     // now we have the packet, we need to break it open
     // we start with the ethernet_frame
@@ -199,13 +171,6 @@ void got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *pa
     }
 
     printf("\n");
-}
-
-void get_ipv4_address(char *msg, __uint32_t address) {
-    struct in_addr ip;
-    ip.s_addr = address;
-
-    printf("%s: %s\n", msg, inet_ntoa(ip));
 }
 
 

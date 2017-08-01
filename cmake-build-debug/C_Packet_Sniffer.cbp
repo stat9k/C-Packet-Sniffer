@@ -85,6 +85,9 @@
 		<Unit filename="/Users/jackmac/Documents/OneDrive/CLionProjects/C-Packet-Sniffer/main.c">
 			<Option target="C_Packet_Sniffer"/>
 		</Unit>
+		<Unit filename="/Users/jackmac/Documents/OneDrive/CLionProjects/C-Packet-Sniffer/main.h">
+			<Option target="C_Packet_Sniffer"/>
+		</Unit>
 		<Unit filename="/Users/jackmac/Documents/OneDrive/CLionProjects/C-Packet-Sniffer/packet_headers.h">
 			<Option target="C_Packet_Sniffer"/>
 		</Unit>
