@@ -55,6 +55,13 @@ void get_ipv6_address (char *, struct in6_addr);
  */
 void tcp_segment (const u_char *);
 
+/**
+ * Figures out whether it will be displaying IPv4 or IPv6 protocol.
+ * This is done as tcp/udp will use the same functions regardless of
+ * ip protocol. The only difference will be ICMPv6
+ */
+void do_protocol(int, const u_char *, int, unsigned int);
+
 
 /**
  * The main function for parsing a packet

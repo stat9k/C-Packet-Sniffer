@@ -69,21 +69,15 @@ int
 unpack_ipv6_packet (const u_char *packet)
 {
     struct ipv6_header *ip_packet = (struct ipv6_header *) packet;
-    printf("\tVersion: %d\n", ip_packet->version >> 8);
+    printf("\tVersion: %d\n", ip_packet->version);
     get_ipv6_address("\tSource Address", ip_packet->src_addr);
     get_ipv6_address("\tDestination Address", ip_packet->dst_addr);
 
-    return 0;
+    return ip_packet->next_header;
 }
 
 void
 icmp_packet ()
-{
-
-}
-
-void
-udp_segment ()
 {
 
 }
@@ -140,9 +134,57 @@ tcp_segment(const u_char *packet) {
 
     printf("\t\tSource Port: %d\n", ntohs(tcp_segment->src_port));
     printf("\t\tDestination Port: %d\n", ntohs(tcp_segment->dest_port));
-    printf("\t\tSequence: %d\n", ntohl(tcp_segment->sequence));
-    printf("\t\tAcknowledgement: %d\n", ntohl(tcp_segment->acknowledgment));
+    printf("\t\tSequence: %d\n", ntohs(tcp_segment->sequence));
+    printf("\t\tAcknowledgement: %d\n", ntohs(tcp_segment->acknowledgment));
     printf("\t\tData Offset: %d\n", tcp_segment->data_offset);
+}
+
+
+void
+udp_segment (const u_char *packet)
+{
+    struct udp_header *udp_segment = (struct udp_header *) packet;
+    printf("\t\tSource Port: %d\n", ntohs(udp_segment->src_port));
+    printf("\t\tDestination Port: %d\n", ntohs(udp_segment->dst_port));
+    printf("\t\tLength: %d\n", ntohs(udp_segment->length));
+}
+
+
+void
+do_protocol(int ip_proto, const u_char *packet, int ipv, unsigned int header_len)
+{
+
+    int ip_header_size = sizeof(struct ipv4_header);        //version 4 by default
+
+    if (ipv == 6)                                           // IPv6 6
+        ip_header_size = sizeof(struct ipv6_header);
+
+    // unpack the IPv4 protocol
+    if (ip_proto == 6)                                      // TCP
+    {
+        printf("\tTCP Segment:\n");
+        tcp_segment(packet + ETH_HEADER_LENGTH + ip_header_size);
+
+        dump((packet + ETH_HEADER_LENGTH + ip_header_size + sizeof(struct tcp_header)), header_len);
+
+    }
+
+    else if (ip_proto == 17)                                // UDP
+    {
+        printf("\tUDP Segment:\n");
+        udp_segment(packet + ETH_HEADER_LENGTH + ip_header_size);
+    }
+
+    else if (ip_proto == 1)                                 // ICMP
+    {
+        printf("\tICMP Packet:");
+    }
+
+    else
+    {
+        printf("Unknown IPv%d Protocol\n", ipv);
+        return;
+    }
 }
 
 void
@@ -161,40 +203,22 @@ got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *packet)
             // unpack the IPv4 packet
             ip_proto = unpack_ipv4_packet(packet + ETH_HEADER_LENGTH);
 
-            // unpack the IPv4 protocol
-            if (ip_proto == 6)                      // TCP
-            {
-                printf("\tTCP Segment\n");
-                tcp_segment(packet + ETH_HEADER_LENGTH + sizeof(struct ipv4_header));
-
-                dump((packet + ETH_HEADER_LENGTH + sizeof(struct ipv4_header) + sizeof(struct tcp_header)), header->len);
-
-            }
-
-            else if (ip_proto == 1)                 // ICMP
-            {
-
-            }
-
-            else if (ip_proto == 17)                // UDP
-            {
-
-            }
-
-            else
-            {
-                perror("Unknown IPv4 Protocol\n");
-                return;
-            }
+            do_protocol(ip_proto, packet, 4, header->len);
 
             break;
 
         case 56710:                                 // IPv6
             printf("Protocol: IPv6\n");
-            unpack_ipv6_packet(packet + ETH_HEADER_LENGTH);
+
+            // unpack the ipv6 packet
+            ip_proto = unpack_ipv6_packet(packet + ETH_HEADER_LENGTH);
+
+            do_protocol(ip_proto, packet, 6, header->len);
+
             break;
 
         default:
+            printf("Protocol: Unknown\n");
             break;
     }
 

@@ -18,6 +18,7 @@ struct ethernet_frame {
     unsigned short protocol;
 };
 
+
 struct ipv4_header {
     unsigned char ihl : 4;
     unsigned char version : 4;
@@ -30,14 +31,18 @@ struct ipv4_header {
     unsigned short header_checksum;
     unsigned int src_addr;
     unsigned int dest_addr;
-
-    // payload should be exposed by now...
 };
 
+
 struct ipv6_header {
-    unsigned char version : 4;
-    unsigned int traffic_class : 8;
-    unsigned int flow_label : 20;
+#if defined(WORDS_BIGENDIAN)
+    u_int8_t version:4, traffic_class_high:4;
+	u_int8_t traffic_class_low:4, flow_label_high:4;
+#else
+    unsigned int traffic_class_high :4, version :4;
+    unsigned int flow_label_high :4, traffic_class_low :4;
+#endif
+    unsigned int flow_label_low : 16;
     unsigned int payload_length : 16;
     unsigned char  next_header : 8;
     unsigned char hop_limit : 8;
@@ -64,4 +69,11 @@ struct tcp_header {
     unsigned short window_size;
     unsigned short checksum;
     unsigned short urgent_pointer;
+};
+
+struct udp_header {
+    unsigned int src_port : 16;
+    unsigned int dst_port : 16;
+    unsigned int length : 16;
+    unsigned int checksum : 16;
 };
