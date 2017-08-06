@@ -56,6 +56,16 @@ void get_ipv6_address (char *, struct in6_addr);
 void tcp_segment (const u_char *);
 
 /**
+ * Unpacks the udp segment and print valid information to std.err
+ */
+void udp_segment (const u_char *);
+
+/**
+ * Unpacks the icmp packet and print valid informaiton to std.err
+ */
+void icmp_packet (const u_char *);
+
+/**
  * Figures out whether it will be displaying IPv4 or IPv6 protocol.
  * This is done as tcp/udp will use the same functions regardless of
  * ip protocol. The only difference will be ICMPv6

@@ -77,12 +77,6 @@ unpack_ipv6_packet (const u_char *packet)
 }
 
 void
-icmp_packet ()
-{
-
-}
-
-void
 dump(const unsigned char *data_buffer, const unsigned int length) {
     unsigned char byte;
     unsigned int i, j;
@@ -134,8 +128,8 @@ tcp_segment(const u_char *packet) {
 
     printf("\t\tSource Port: %d\n", ntohs(tcp_segment->src_port));
     printf("\t\tDestination Port: %d\n", ntohs(tcp_segment->dest_port));
-    printf("\t\tSequence: %d\n", ntohs(tcp_segment->sequence));
-    printf("\t\tAcknowledgement: %d\n", ntohs(tcp_segment->acknowledgment));
+    printf("\t\tSequence: %d\n", ntohl(tcp_segment->sequence));
+    printf("\t\tAcknowledgement: %d\n", ntohl(tcp_segment->acknowledgment));
     printf("\t\tData Offset: %d\n", tcp_segment->data_offset);
 }
 
@@ -149,6 +143,13 @@ udp_segment (const u_char *packet)
     printf("\t\tLength: %d\n", ntohs(udp_segment->length));
 }
 
+void
+icmp_packet (const u_char *packet)
+{
+    struct icmp_packet *icmp_header = (struct icmp_packet *) packet;
+
+}
+
 
 void
 do_protocol(int ip_proto, const u_char *packet, int ipv, unsigned int header_len)
@@ -159,25 +160,33 @@ do_protocol(int ip_proto, const u_char *packet, int ipv, unsigned int header_len
     if (ipv == 6)                                           // IPv6 6
         ip_header_size = sizeof(struct ipv6_header);
 
+    packet = packet + ip_header_size;
+
     // unpack the IPv4 protocol
     if (ip_proto == 6)                                      // TCP
     {
         printf("\tTCP Segment:\n");
-        tcp_segment(packet + ETH_HEADER_LENGTH + ip_header_size);
+        tcp_segment(packet);
 
-        dump((packet + ETH_HEADER_LENGTH + ip_header_size + sizeof(struct tcp_header)), header_len);
+        // print data
+        dump((packet + sizeof(struct tcp_header)), header_len);
 
     }
 
     else if (ip_proto == 17)                                // UDP
     {
         printf("\tUDP Segment:\n");
-        udp_segment(packet + ETH_HEADER_LENGTH + ip_header_size);
+        udp_segment(packet);
+
+        // print data
     }
 
     else if (ip_proto == 1)                                 // ICMP
     {
         printf("\tICMP Packet:");
+        icmp_packet(packet);
+
+        // print data
     }
 
     else
@@ -203,7 +212,7 @@ got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *packet)
             // unpack the IPv4 packet
             ip_proto = unpack_ipv4_packet(packet + ETH_HEADER_LENGTH);
 
-            do_protocol(ip_proto, packet, 4, header->len);
+            do_protocol(ip_proto, packet + ETH_HEADER_LENGTH, 4, header->len);
 
             break;
 
@@ -213,7 +222,7 @@ got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *packet)
             // unpack the ipv6 packet
             ip_proto = unpack_ipv6_packet(packet + ETH_HEADER_LENGTH);
 
-            do_protocol(ip_proto, packet, 6, header->len);
+            do_protocol(ip_proto, packet + ETH_HEADER_LENGTH, 6, header->len);
 
             break;
 

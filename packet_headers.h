@@ -53,8 +53,8 @@ struct ipv6_header {
 struct tcp_header {
     unsigned short src_port;
     unsigned short dest_port;
-    unsigned int sequence;
-    unsigned int acknowledgment;
+    u_int32_t sequence;
+    u_int32_t acknowledgment;
     unsigned char reserved :4;
     unsigned char data_offset :4;
     unsigned char flags;
@@ -76,4 +76,11 @@ struct udp_header {
     unsigned int dst_port : 16;
     unsigned int length : 16;
     unsigned int checksum : 16;
+};
+
+struct icmp_packet {
+    unsigned int type : 8;
+    unsigned int code : 8;
+    unsigned int checksum : 16;
+    unsigned char rest_of_header;
 };
