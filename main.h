@@ -18,7 +18,7 @@ int packet_number = 1;
  * @param packet - the parsed data from tcpdump/pcap_file
  * @return - the ethernet protocol - IPv4, IPv6, etc...
  */
-int unpack_ethernet_header_frame (const u_char *packet);
+int unpack_ethernet_header_frame (const u_char *);
 
 
 /**
@@ -27,20 +27,33 @@ int unpack_ethernet_header_frame (const u_char *packet);
  * @param packet - the parsed data from tcpdump + ETHERNET_HEADER_LENGTH
  * @param return - the IPv4 protocol - TCP/UDP/ICMP etc...
  */
-int unpack_ipv4_packet (const u_char *packet);
+int unpack_ipv4_packet (const u_char *);
+
+
+/**
+ * Unpack the IPv6 Packet, prints out the ipv6 header info
+ *
+ */
+int unpack_ipv6_packet (const u_char *);
 
 /**
  * Prints the IPv4 address in the form of 127.0.0.1
  *
  * @param address - the bytes to be converted
  */
-void get_ipv4_address (char *msg, __uint32_t address);
+void get_ipv4_address (char *, __uint32_t);
+
+
+/**
+ * Print the IPv6 address in the form of xxxx::xxxx
+ */
+void get_ipv6_address (char *, struct in6_addr);
 
 /**
  * Unpack the tcp segment and print valid information to std.err
  * @param packet
  */
-void tcp_segment (const u_char *packet);
+void tcp_segment (const u_char *);
 
 
 /**
@@ -50,5 +63,5 @@ void tcp_segment (const u_char *packet);
  * @param header
  * @param packet
  */
-void got_packet (u_char *args, const struct pcap_pkthdr *header, const u_char *packet);
+void got_packet (u_char *, const struct pcap_pkthdr *, const u_char *);
 

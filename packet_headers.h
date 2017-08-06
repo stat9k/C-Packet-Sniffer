@@ -2,6 +2,7 @@
  * Created by Jack O'Brien on 31/07/17.
  */
 
+
 #ifndef C_PACKET_SNIFFER_PACKET_HEADERS_H
 #define C_PACKET_SNIFFER_PACKET_HEADERS_H
 
@@ -17,7 +18,7 @@ struct ethernet_frame {
     unsigned short protocol;
 };
 
-struct ipv4_packet {
+struct ipv4_header {
     unsigned char ihl : 4;
     unsigned char version : 4;
     unsigned char type_of_service;
@@ -31,6 +32,17 @@ struct ipv4_packet {
     unsigned int dest_addr;
 
     // payload should be exposed by now...
+};
+
+struct ipv6_header {
+    unsigned char version : 4;
+    unsigned int traffic_class : 8;
+    unsigned int flow_label : 20;
+    unsigned int payload_length : 16;
+    unsigned char  next_header : 8;
+    unsigned char hop_limit : 8;
+    struct in6_addr src_addr;
+    struct in6_addr dst_addr;
 };
 
 struct tcp_header {
@@ -48,6 +60,7 @@ struct tcp_header {
 #define psh 0x08
 #define ack 0x10
 #define urg 0x20
+
     unsigned short window_size;
     unsigned short checksum;
     unsigned short urgent_pointer;

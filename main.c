@@ -16,9 +16,10 @@
 
 #include <stdio.h>
 #include <pcap.h>
-#include "packet_headers.h"
 #include <arpa/inet.h>
+#include <ctype.h>
 #include "main.h"
+#include "packet_headers.h"
 
 
 int
@@ -52,7 +53,7 @@ unpack_ethernet_header_frame(const u_char *packet) {
 int
 unpack_ipv4_packet(const u_char *packet) {
 
-    struct ipv4_packet *ip_packet = (struct ipv4_packet *) packet;
+    struct ipv4_header *ip_packet = (struct ipv4_header *) packet;
 
     printf("\tVersion: %d\n", ip_packet->version);
     printf("\tTotal Length: %d\n", ip_packet->total_length);
@@ -61,6 +62,18 @@ unpack_ipv4_packet(const u_char *packet) {
     get_ipv4_address("\tDestination Address", ip_packet->dest_addr);
 
     return ip_packet->protocol;
+}
+
+
+int
+unpack_ipv6_packet (const u_char *packet)
+{
+    struct ipv6_header *ip_packet = (struct ipv6_header *) packet;
+    printf("\tVersion: %d\n", ip_packet->version >> 8);
+    get_ipv6_address("\tSource Address", ip_packet->src_addr);
+    get_ipv6_address("\tDestination Address", ip_packet->dst_addr);
+
+    return 0;
 }
 
 void
@@ -108,6 +121,20 @@ get_ipv4_address(char *msg, __uint32_t address) {
 }
 
 void
+get_ipv6_address(char *string, struct in6_addr ip_address)
+{
+    int i = 0;
+    char addr[INET6_ADDRSTRLEN];
+    inet_ntop(AF_INET6, &ip_address, addr, INET6_ADDRSTRLEN);
+
+    printf("%s: ", string);
+    while (addr[i])
+        putchar (toupper(addr[i++]));
+
+    printf("\n");
+}
+
+void
 tcp_segment(const u_char *packet) {
     struct tcp_header *tcp_segment = (struct tcp_header *) packet;
 
@@ -138,9 +165,9 @@ got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *packet)
             if (ip_proto == 6)                      // TCP
             {
                 printf("\tTCP Segment\n");
-                tcp_segment(packet + ETH_HEADER_LENGTH + sizeof(struct ipv4_packet));
+                tcp_segment(packet + ETH_HEADER_LENGTH + sizeof(struct ipv4_header));
 
-                dump((packet + ETH_HEADER_LENGTH + sizeof(struct ipv4_packet) + sizeof(struct tcp_header)), header->len);
+                dump((packet + ETH_HEADER_LENGTH + sizeof(struct ipv4_header) + sizeof(struct tcp_header)), header->len);
 
             }
 
@@ -164,6 +191,7 @@ got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *packet)
 
         case 56710:                                 // IPv6
             printf("Protocol: IPv6\n");
+            unpack_ipv6_packet(packet + ETH_HEADER_LENGTH);
             break;
 
         default:

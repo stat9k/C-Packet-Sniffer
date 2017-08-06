@@ -82,6 +82,9 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/Users/jackmac/Documents/OneDrive/CLionProjects/C-Packet-Sniffer/diff_sniff.c">
+			<Option target="C_Packet_Sniffer"/>
+		</Unit>
 		<Unit filename="/Users/jackmac/Documents/OneDrive/CLionProjects/C-Packet-Sniffer/main.c">
 			<Option target="C_Packet_Sniffer"/>
 		</Unit>

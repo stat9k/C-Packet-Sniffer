@@ -1,5 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/C_Packet_Sniffer.dir/main.c.o"
+  "CMakeFiles/C_Packet_Sniffer.dir/diff_sniff.c.o"
   "C_Packet_Sniffer.pdb"
   "C_Packet_Sniffer"
 )
