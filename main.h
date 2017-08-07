@@ -11,6 +11,13 @@
 
 int packet_number = 1;
 
+
+/**
+ * Converts a string to a MAC or IPv6 Address
+ * in the format of xx:xx... or xxxx::xxxx
+ */
+void mac_toupper (char *);
+
 /**
  * Unpacks the ethernet frame, prints out the source and destination
  * MAC addresses and returns the protocol

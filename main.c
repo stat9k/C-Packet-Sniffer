@@ -18,8 +18,22 @@
 #include <pcap.h>
 #include <arpa/inet.h>
 #include <ctype.h>
+#include <netinet/if_ether.h>
 #include "main.h"
 #include "packet_headers.h"
+
+
+void
+mac_toupper (char *mac)
+{
+    int i=0;
+    while (mac[i])
+    {
+        putchar (toupper(mac[i]));
+        i++;
+    }
+    printf("\n");
+}
 
 
 int
@@ -27,25 +41,12 @@ unpack_ethernet_header_frame(const u_char *packet) {
 
     struct ethernet_frame *eth_frame = (struct ethernet_frame *) packet;
 
-    printf("Source Mac");
-    for (int i=0; i<ETH_ADDRESS_LENGTH; i++)
-    {
-        if (i == 0)
-            printf(": %02x", eth_frame->source_mac_addr[i]);
-        else
-            printf(":%02x", eth_frame->source_mac_addr[i]);
-    }
-    printf("\n");
+    printf("Source Mac: ");
+    mac_toupper(ether_ntoa((struct ether_addr *) eth_frame->source_mac_addr));
 
-    printf("Destination Mac");
-    for (int i=0; i<ETH_ADDRESS_LENGTH; i++)
-    {
-        if (i == 0)
-            printf(": %02x", eth_frame->dest_mac_addr[i]);
-        else
-            printf(":%02x", eth_frame->dest_mac_addr[i]);
-    }
-    printf("\n");
+
+    printf("Destination Mac: ");
+    mac_toupper(ether_ntoa((struct ether_addr *) eth_frame->dest_mac_addr));
 
     return eth_frame->protocol;
 }
@@ -58,8 +59,8 @@ unpack_ipv4_packet(const u_char *packet) {
     printf("\tVersion: %d\n", ip_packet->version);
     printf("\tTotal Length: %d\n", ip_packet->total_length);
     printf("\tTime To Live: %d\n", ip_packet->ttl);
-    get_ipv4_address("\tSource Address", ip_packet->src_addr);
-    get_ipv4_address("\tDestination Address", ip_packet->dest_addr);
+    get_ipv4_address("\tSource Address", ip_packet->src_ip_addr);
+    get_ipv4_address("\tDestination Address", ip_packet->dst_ip_addr);
 
     return ip_packet->protocol;
 }
@@ -78,6 +79,8 @@ unpack_ipv6_packet (const u_char *packet)
 
 void
 dump(const unsigned char *data_buffer, const unsigned int length) {
+
+    printf("\t\tPayload: (%d bytes)\n\n", length - 32);
     unsigned char byte;
     unsigned int i, j;
 
@@ -113,13 +116,11 @@ get_ipv6_address(char *string, struct in6_addr ip_address)
 {
     int i = 0;
     char addr[INET6_ADDRSTRLEN];
+
     inet_ntop(AF_INET6, &ip_address, addr, INET6_ADDRSTRLEN);
 
     printf("%s: ", string);
-    while (addr[i])
-        putchar (toupper(addr[i++]));
-
-    printf("\n");
+    mac_toupper(addr);
 }
 
 void

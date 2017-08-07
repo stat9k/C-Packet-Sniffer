@@ -29,8 +29,8 @@ struct ipv4_header {
     unsigned char ttl;
     unsigned char protocol;
     unsigned short header_checksum;
-    unsigned int src_addr;
-    unsigned int dest_addr;
+    unsigned int src_ip_addr;
+    unsigned int dst_ip_addr;
 };
 
 
