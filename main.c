@@ -148,6 +148,9 @@ icmp_packet (const u_char *packet)
 {
     struct icmp_packet *icmp_header = (struct icmp_packet *) packet;
 
+    printf("\t\tType: %d\n", icmp_header->type);
+    printf("\t\tCode: %d\n", icmp_header->code);
+
 }
 
 
@@ -162,8 +165,9 @@ do_protocol(int ip_proto, const u_char *packet, int ipv, unsigned int header_len
 
     packet = packet + ip_header_size;
 
-    // unpack the IPv4 protocol
-    if (ip_proto == 6)                                      // TCP
+
+        // TCP
+    if (ip_proto == 6)
     {
         printf("\tTCP Segment:\n");
         tcp_segment(packet);
@@ -173,25 +177,30 @@ do_protocol(int ip_proto, const u_char *packet, int ipv, unsigned int header_len
 
     }
 
-    else if (ip_proto == 17)                                // UDP
+        // UDP
+    else if (ip_proto == 17)
     {
         printf("\tUDP Segment:\n");
         udp_segment(packet);
 
         // print data
+        dump((packet + sizeof(struct udp_header)), header_len);
+
     }
 
-    else if (ip_proto == 1)                                 // ICMP
+        // ICMP
+    else if (ip_proto == 1 || ip_proto == 58)
     {
-        printf("\tICMP Packet:");
+        printf("\tICMP Packet:\n");
         icmp_packet(packet);
 
         // print data
+        dump((packet + sizeof(struct icmp_packet)), header_len);
     }
 
     else
     {
-        printf("Unknown IPv%d Protocol\n", ipv);
+        printf("\tUnknown IPv%d Protocol: %d\n", ipv, ip_proto);
         return;
     }
 }

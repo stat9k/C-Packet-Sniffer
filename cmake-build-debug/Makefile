@@ -123,33 +123,6 @@ C_Packet_Sniffer/fast:
 	$(MAKE) -f CMakeFiles/C_Packet_Sniffer.dir/build.make CMakeFiles/C_Packet_Sniffer.dir/build
 .PHONY : C_Packet_Sniffer/fast
 
-diff_sniff.o: diff_sniff.c.o
-
-.PHONY : diff_sniff.o
-
-# target to build an object file
-diff_sniff.c.o:
-	$(MAKE) -f CMakeFiles/C_Packet_Sniffer.dir/build.make CMakeFiles/C_Packet_Sniffer.dir/diff_sniff.c.o
-.PHONY : diff_sniff.c.o
-
-diff_sniff.i: diff_sniff.c.i
-
-.PHONY : diff_sniff.i
-
-# target to preprocess a source file
-diff_sniff.c.i:
-	$(MAKE) -f CMakeFiles/C_Packet_Sniffer.dir/build.make CMakeFiles/C_Packet_Sniffer.dir/diff_sniff.c.i
-.PHONY : diff_sniff.c.i
-
-diff_sniff.s: diff_sniff.c.s
-
-.PHONY : diff_sniff.s
-
-# target to generate assembly for a file
-diff_sniff.c.s:
-	$(MAKE) -f CMakeFiles/C_Packet_Sniffer.dir/build.make CMakeFiles/C_Packet_Sniffer.dir/diff_sniff.c.s
-.PHONY : diff_sniff.c.s
-
 main.o: main.c.o
 
 .PHONY : main.o
@@ -186,9 +159,6 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... C_Packet_Sniffer"
-	@echo "... diff_sniff.o"
-	@echo "... diff_sniff.i"
-	@echo "... diff_sniff.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
