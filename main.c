@@ -17,8 +17,8 @@
 #include <stdio.h>
 #include <pcap.h>
 #include <arpa/inet.h>
-#include <ctype.h>
-#include <netinet/if_ether.h>
+#include <netinet/if_ether.h>       // if running on mac osx
+// #include <netinet/ether.h>       // if running on linux distro
 #include "main.h"
 #include "packet_headers.h"
 
