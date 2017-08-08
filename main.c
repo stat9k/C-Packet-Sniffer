@@ -17,16 +17,15 @@
 #include <stdio.h>
 #include <pcap.h>
 #include <arpa/inet.h>
-
-#ifdef __APPLE__
-    #include <netinet/if_ether.h>       // if running on mac osx
-#else
-    #include <netinet/ether.h>          // if running on linux distro
-#endif
-
 #include <ctype.h>
 #include "main.h"
-#include "packet_headers.h"
+
+#ifdef __APPLE__
+    #include <netinet/if_ether.h>       // if running on mac
+#else
+    #include <netinet/ether.h>          // if running on linux
+#endif
+
 
 
 void
@@ -43,7 +42,7 @@ mac_toupper (char *mac)
 
 
 int
-unpack_ethernet_header_frame(const u_char *packet) {
+unpack_ethernet_header_frame (const u_char *packet) {
 
     struct ethernet_frame *eth_frame = (struct ethernet_frame *) packet;
 
@@ -58,7 +57,7 @@ unpack_ethernet_header_frame(const u_char *packet) {
 }
 
 int
-unpack_ipv4_packet(const u_char *packet) {
+unpack_ipv4_packet (const u_char *packet) {
 
     struct ipv4_header *ip_packet = (struct ipv4_header *) packet;
 
@@ -84,7 +83,7 @@ unpack_ipv6_packet (const u_char *packet)
 }
 
 void
-dump(const unsigned char *data_buffer, const unsigned int length) {
+dump (const unsigned char *data_buffer, const unsigned int length) {
 
     printf("\t\tPayload: (%d bytes)\n\n", length - 32);
     unsigned char byte;
@@ -110,7 +109,7 @@ dump(const unsigned char *data_buffer, const unsigned int length) {
 }
 
 void
-get_ipv4_address(char *msg, __uint32_t address) {
+get_ipv4_address (char *msg, __uint32_t address) {
     struct in_addr ip;
     ip.s_addr = address;
 
@@ -118,7 +117,7 @@ get_ipv4_address(char *msg, __uint32_t address) {
 }
 
 void
-get_ipv6_address(char *string, struct in6_addr ip_address)
+get_ipv6_address (char *string, struct in6_addr ip_address)
 {
     char addr[INET6_ADDRSTRLEN];
 
@@ -129,7 +128,7 @@ get_ipv6_address(char *string, struct in6_addr ip_address)
 }
 
 void
-tcp_segment(const u_char *packet) {
+tcp_segment (const u_char *packet) {
     struct tcp_header *tcp_segment = (struct tcp_header *) packet;
 
     printf("\t\tSource Port: %d\n", ntohs(tcp_segment->src_port));
@@ -161,7 +160,7 @@ icmp_packet (const u_char *packet)
 
 
 void
-do_protocol(int ip_proto, const u_char *packet, int ipv, unsigned int header_len)
+do_protocol (int ip_proto, const u_char *packet, int ipv, unsigned int header_len)
 {
 
     int ip_header_size = sizeof(struct ipv4_header);        //version 4 by default

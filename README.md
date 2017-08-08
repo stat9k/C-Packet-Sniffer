@@ -6,10 +6,10 @@ uncomment and comment the correct libraries.
 
 Now run the following
 
-# To compile:
+### To compile:
     gcc -o sniffer main.c -l pcap
 
-# To run:
+### To run:
     ./sniffer <filename.pcap>
 
 This program can run IPv4 and IPv6 protocols.

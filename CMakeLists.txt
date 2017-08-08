@@ -3,5 +3,5 @@ project(C_Packet_Sniffer)
 
 set(CMAKE_C_STANDARD 99)
 
-set(SOURCE_FILES main.c packet_headers.h main.h)
+set(SOURCE_FILES main.c main.h)
 add_executable(C_Packet_Sniffer ${SOURCE_FILES})
