@@ -14,6 +14,7 @@
     <list default="true" id="d4588b11-50b6-435e-a962-8d5ee9380744" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.c" afterPath="$PROJECT_DIR$/main.c" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.h" afterPath="$PROJECT_DIR$/main.h" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -31,12 +32,12 @@
       <file leaf-file-name="main.c" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="99">
-              <caret line="20" column="16" lean-forward="true" selection-start-line="20" selection-start-column="16" selection-end-line="20" selection-end-column="16" />
+            <state relative-caret-position="146">
+              <caret line="98" column="25" lean-forward="true" selection-start-line="98" selection-start-column="25" selection-end-line="98" selection-end-column="25" />
               <folding>
                 <element signature="e#418#436#0" expanded="true" />
-                <element signature="e#571#633#0" expanded="true" />
-                <element signature="e#642#660#0" expanded="true" />
+                <element signature="e#571#636#0" expanded="true" />
+                <element signature="e#645#663#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -58,8 +59,8 @@
       <file leaf-file-name="main.h" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="23" column="5" lean-forward="false" selection-start-line="23" selection-start-column="5" selection-end-line="23" selection-end-column="5" />
+            <state relative-caret-position="178">
+              <caret line="18" column="33" lean-forward="false" selection-start-line="18" selection-start-column="33" selection-end-line="18" selection-end-column="33" />
               <folding />
             </state>
           </provider>
@@ -95,9 +96,9 @@
         <option value="$PROJECT_DIR$/diff_main.cpp" />
         <option value="$PROJECT_DIR$/diff_sniff.c" />
         <option value="$PROJECT_DIR$/packet_headers.h" />
-        <option value="$PROJECT_DIR$/main.h" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/main.c" />
+        <option value="$PROJECT_DIR$/main.h" />
       </list>
     </option>
   </component>
@@ -392,7 +393,7 @@
       <workItem from="1501983199295" duration="21000" />
       <workItem from="1501983264198" duration="10067000" />
       <workItem from="1502100490154" duration="6195000" />
-      <workItem from="1502150201398" duration="2764000" />
+      <workItem from="1502150201398" duration="3527000" />
     </task>
     <task id="LOCAL-00001" summary="Instantiated ipv4 protocol. Created ipv4 struct using types to define&#10;byte structure of ipv4 header">
       <created>1501493324207</created>
@@ -492,11 +493,18 @@
       <option name="project" value="LOCAL" />
       <updated>1502155458175</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="pre proccessor statements added for certain architecture">
+      <created>1502155938336</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1502155938336</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="38022000" />
+    <option name="totallyTimeSpent" value="38785000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -556,7 +564,8 @@
     <MESSAGE value="added header for dump" />
     <MESSAGE value="added error check for pcap_open_offline" />
     <MESSAGE value="added more readme statements and configured library netinet/if_ether for both &#10;linux and mac" />
-    <option name="LAST_COMMIT_MESSAGE" value="added more readme statements and configured library netinet/if_ether for both &#10;linux and mac" />
+    <MESSAGE value="pre proccessor statements added for certain architecture" />
+    <option name="LAST_COMMIT_MESSAGE" value="pre proccessor statements added for certain architecture" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -607,8 +616,8 @@
           <caret line="163" column="0" lean-forward="false" selection-start-line="163" selection-start-column="0" selection-end-line="163" selection-end-column="0" />
           <folding>
             <element signature="e#418#436#0" expanded="true" />
-            <element signature="e#571#633#0" expanded="true" />
-            <element signature="e#642#660#0" expanded="true" />
+            <element signature="e#571#636#0" expanded="true" />
+            <element signature="e#645#663#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -645,8 +654,8 @@
           <caret line="163" column="0" lean-forward="true" selection-start-line="163" selection-start-column="0" selection-end-line="163" selection-end-column="0" />
           <folding>
             <element signature="e#418#436#0" expanded="true" />
-            <element signature="e#571#633#0" expanded="true" />
-            <element signature="e#642#660#0" expanded="true" />
+            <element signature="e#571#636#0" expanded="true" />
+            <element signature="e#645#663#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -675,8 +684,8 @@
           <caret line="155" column="0" lean-forward="false" selection-start-line="155" selection-start-column="0" selection-end-line="155" selection-end-column="0" />
           <folding>
             <element signature="e#418#436#0" expanded="true" />
-            <element signature="e#571#633#0" expanded="true" />
-            <element signature="e#642#660#0" expanded="true" />
+            <element signature="e#571#636#0" expanded="true" />
+            <element signature="e#645#663#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -705,8 +714,8 @@
           <caret line="155" column="0" lean-forward="false" selection-start-line="155" selection-start-column="0" selection-end-line="155" selection-end-column="0" />
           <folding>
             <element signature="e#418#436#0" expanded="true" />
-            <element signature="e#571#633#0" expanded="true" />
-            <element signature="e#642#660#0" expanded="true" />
+            <element signature="e#571#636#0" expanded="true" />
+            <element signature="e#645#663#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -735,8 +744,8 @@
           <caret line="166" column="13" lean-forward="true" selection-start-line="166" selection-start-column="13" selection-end-line="166" selection-end-column="13" />
           <folding>
             <element signature="e#418#436#0" expanded="true" />
-            <element signature="e#571#633#0" expanded="true" />
-            <element signature="e#642#660#0" expanded="true" />
+            <element signature="e#571#636#0" expanded="true" />
+            <element signature="e#645#663#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -765,8 +774,8 @@
           <caret line="158" column="42" lean-forward="false" selection-start-line="158" selection-start-column="42" selection-end-line="158" selection-end-column="42" />
           <folding>
             <element signature="e#418#436#0" expanded="true" />
-            <element signature="e#571#633#0" expanded="true" />
-            <element signature="e#642#660#0" expanded="true" />
+            <element signature="e#571#636#0" expanded="true" />
+            <element signature="e#645#663#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -795,8 +804,8 @@
           <caret line="170" column="119" lean-forward="false" selection-start-line="170" selection-start-column="119" selection-end-line="170" selection-end-column="119" />
           <folding>
             <element signature="e#418#436#0" expanded="true" />
-            <element signature="e#571#633#0" expanded="true" />
-            <element signature="e#642#660#0" expanded="true" />
+            <element signature="e#571#636#0" expanded="true" />
+            <element signature="e#645#663#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -832,8 +841,8 @@
           <caret line="22" column="1" lean-forward="true" selection-start-line="22" selection-start-column="1" selection-end-line="22" selection-end-column="1" />
           <folding>
             <element signature="e#418#436#0" expanded="true" />
-            <element signature="e#571#633#0" expanded="true" />
-            <element signature="e#642#660#0" expanded="true" />
+            <element signature="e#571#636#0" expanded="true" />
+            <element signature="e#645#663#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -869,8 +878,8 @@
           <caret line="21" column="85" lean-forward="true" selection-start-line="21" selection-start-column="85" selection-end-line="21" selection-end-column="85" />
           <folding>
             <element signature="e#418#436#0" expanded="true" />
-            <element signature="e#571#633#0" expanded="true" />
-            <element signature="e#642#660#0" expanded="true" />
+            <element signature="e#571#636#0" expanded="true" />
+            <element signature="e#645#663#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -889,8 +898,8 @@
           <caret line="5" column="19" lean-forward="false" selection-start-line="5" selection-start-column="19" selection-end-line="5" selection-end-column="19" />
           <folding>
             <element signature="e#418#436#0" expanded="true" />
-            <element signature="e#571#633#0" expanded="true" />
-            <element signature="e#642#660#0" expanded="true" />
+            <element signature="e#571#636#0" expanded="true" />
+            <element signature="e#645#663#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -991,20 +1000,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="23" column="5" lean-forward="false" selection-start-line="23" selection-start-column="5" selection-end-line="23" selection-end-column="5" />
+        <state relative-caret-position="178">
+          <caret line="18" column="33" lean-forward="false" selection-start-line="18" selection-start-column="33" selection-end-line="18" selection-end-column="33" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/main.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="99">
-          <caret line="20" column="16" lean-forward="true" selection-start-line="20" selection-start-column="16" selection-end-line="20" selection-end-column="16" />
+        <state relative-caret-position="146">
+          <caret line="98" column="25" lean-forward="true" selection-start-line="98" selection-start-column="25" selection-end-line="98" selection-end-column="25" />
           <folding>
             <element signature="e#418#436#0" expanded="true" />
-            <element signature="e#571#633#0" expanded="true" />
-            <element signature="e#642#660#0" expanded="true" />
+            <element signature="e#571#636#0" expanded="true" />
+            <element signature="e#645#663#0" expanded="true" />
           </folding>
         </state>
       </provider>

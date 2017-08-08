@@ -21,7 +21,7 @@
 #ifdef __APPLE__
     #include <netinet/if_ether.h>       // if running on mac osx
 #else
-    #include <netinet/ether.h>       // if running on linux distro
+    #include <netinet/ether.h>          // if running on linux distro
 #endif
 
 #include <ctype.h>
