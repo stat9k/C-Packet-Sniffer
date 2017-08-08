@@ -251,7 +251,14 @@ int main(int argc, char **argv)
         return -1;
     }
 
-    pcap_t *handle = pcap_open_offline(argv[1], NULL);
+    char errbuff[PCAP_ERRBUF_SIZE];
+    pcap_t *handle = pcap_open_offline(argv[1], errbuff);
+    if (NULL == handle)
+    {
+        printf("Error: %s\n", errbuff);
+        return 1;
+    }
+
     pcap_loop(handle, 1024*1024, got_packet, NULL);
     pcap_close(handle);
 
