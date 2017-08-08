@@ -13,6 +13,11 @@ int packet_number = 1;
 
 
 /**
+ *
+ */
+void dump (const unsigned char *, const unsigned int);
+
+/**
  * Converts a string to a MAC or IPv6 Address
  * in the format of xx:xx... or xxxx::xxxx
  */

@@ -114,7 +114,6 @@ get_ipv4_address(char *msg, __uint32_t address) {
 void
 get_ipv6_address(char *string, struct in6_addr ip_address)
 {
-    int i = 0;
     char addr[INET6_ADDRSTRLEN];
 
     inet_ntop(AF_INET6, &ip_address, addr, INET6_ADDRSTRLEN);

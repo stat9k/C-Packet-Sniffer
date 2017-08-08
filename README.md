@@ -1,7 +1,7 @@
 # C-Packet-Sniffer
 NWEN302 Packet Sniffer created in C
 
-# To compile run:
+# To compile:
     gcc -o sniffer main.c -l pcap
 
 # To run:
