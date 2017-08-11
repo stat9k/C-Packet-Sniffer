@@ -1,13 +1,12 @@
 /*
  * Created by Jack O'Brien on 1/08/17.
  *
- * The header file for our functions in main.c
+ * The header file for our functions in main.c as well as
+ * our packet structs for IPv4, IPv6, Ethernet Frame etc
  */
 
 #ifndef C_PACKET_SNIFFER_MAIN_H
 #define C_PACKET_SNIFFER_MAIN_H
-
-#endif //C_PACKET_SNIFFER_MAIN_H
 
 #define ETH_ADDRESS_LENGTH 6
 #define ETH_HEADER_LENGTH 14
@@ -79,6 +78,19 @@ struct icmp_packet {
     unsigned int checksum : 16;
     unsigned char rest_of_header;
 };
+
+struct ipv6_ext_headers {
+    unsigned int next_header : 8;
+    unsigned int header_ext_length : 8;
+    u_char options_and_padding;
+
+};
+
+
+/**
+ * Recursively checks the extension headers
+ */
+int do_extension_headers (int, const u_char *);
 
 
 /**
@@ -167,3 +179,5 @@ void got_packet (u_char *, const struct pcap_pkthdr *, const u_char *);
  */
 int
 main(int, char **);
+
+#endif //C_PACKET_SNIFFER_MAIN_H

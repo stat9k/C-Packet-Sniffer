@@ -158,6 +158,63 @@ icmp_packet (const u_char *packet)
 
 }
 
+int
+ipv6_extension_header (const u_char *packet)
+{
+    struct ipv6_ext_headers *headers = (struct ipv6_ext_headers *)packet;
+    printf("\t\tNext Header: %d\n", headers->next_header);
+    printf("\t\tOptions: %hhu\n", headers->options_and_padding);
+
+    int next = do_extension_headers(headers->next_header, packet + sizeof(struct ipv6_ext_headers));
+    return next;
+}
+
+int
+do_extension_headers (int ip_proto, const u_char *packet)
+{
+    switch (ip_proto)
+    {
+
+        case 0:
+            printf("\tHop By Hop:\n");
+            ip_proto = ipv6_extension_header (packet);
+            break;
+
+        case 60:
+            printf("\tDestination (Routing):\n");
+            break;
+
+        case 43:
+            printf("\tRouting Header:\n");
+            break;
+
+        case 44:
+            printf("\tFragment Header:\n");
+            break;
+
+        case 51:
+            printf("\tAuthentication Header:\n");
+            break;
+
+        case 50:
+            printf("\tEncapsulation Security Payload Header:\n");
+            break;
+
+        case 135:
+            printf("\tMobility Header:\n");
+            break;
+
+        case 59:
+            printf("\tNo Next Header:\n");
+            break;
+
+        default:
+            break;
+    }
+
+    return ip_proto;
+}
+
 
 void
 do_protocol (int ip_proto, const u_char *packet, int ipv, unsigned int header_len)
@@ -193,20 +250,25 @@ do_protocol (int ip_proto, const u_char *packet, int ipv, unsigned int header_le
 
     }
 
-        // ICMP
-    else if (ip_proto == 1 || ip_proto == 58)
+        // ICMPv4
+    else if (ip_proto == 1)
     {
-        printf("\tICMP Packet:\n");
+        printf("\tICMPv4 Packet:\n");
         icmp_packet(packet);
 
         // print data
         dump((packet + sizeof(struct icmp_packet)), header_len);
     }
 
+    else if (ip_proto == 58)
+    {
+        printf("\tICMPv6 Packet:\n");
+
+    }
+
     else
     {
-        printf("\tUnknown IPv%d Protocol: %d\n", ipv, ip_proto);
-        return;
+       printf("Unknown\n");
     }
 }
 
@@ -235,7 +297,7 @@ got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *packet)
 
             // unpack the ipv6 packet
             ip_proto = unpack_ipv6_packet(packet + ETH_HEADER_LENGTH);
-
+            ip_proto = do_extension_headers(ip_proto, packet + ETH_HEADER_LENGTH + sizeof(struct ipv6_header));
             do_protocol(ip_proto, packet + ETH_HEADER_LENGTH, 6, header->len);
 
             break;
